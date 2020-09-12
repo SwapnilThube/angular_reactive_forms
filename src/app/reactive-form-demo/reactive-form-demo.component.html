@@ -1,0 +1,77 @@
+<div class="container-fluid"> 
+    <div class="well">{{registrationForm.value | json}}</div>
+  <form [formGroup]="registrationForm">
+    <div class="form-group">  
+      <label class="form-lable">Username: </label>
+      <input type="text" class="form-control" formControlName="userName"
+      [class.is-invalid]="userName.invalid && userName.touched" required/>
+      <div   [class.d-none]="userName.valid || userName.untouched">
+       <small *ngIf="userName.errors?.required">Username is required</small>
+       <small *ngIf="userName.errors?.minlength">Minimum 3 char required</small>
+       <small *ngIf="userName.errors?.forbiddenName">{{userName.errors?.forbiddenName.value}} is not allowed</small>
+       <small *ngIf="userName.errors?.NameNotAllowd">{{userName.errors?.NameNotAllowd.value}} is not allowed</small>
+      </div>
+      
+      <!-- we can registration from ts file also
+      registrationForm.get('userName') or either create a function in.ts file
+      -->
+    </div>
+    <div class="form-group">  
+      <label class="form-lable">Mobile: </label>
+      <input type="text" class="form-control" formControlName="mobile" 
+      [class.is-invalid]="registrationForm.get('mobile').invalid && registrationForm.get('mobile').touched" required/>
+
+      <div class="text-danger" *ngIf="registrationForm.get('mobile').invalid && registrationForm.get('mobile').touched">
+        <small  *ngIf="registrationForm.get('mobile').errors?.required"> 
+          Empty Not allowed </small>
+        <small *ngIf="registrationForm.get('mobile').errors?.NameNotAllowd">
+            {{ registrationForm.get('mobile').errors?.NameNotAllowd.value }} Not allowed
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Email: </label>
+      <input type="text" class="form-control" formControlName="email"
+      [class.is-invalid]="email.invalid && email.touched">
+      <small *ngIf="email.invalid && email.touched">Email id is required</small>
+    </div>
+
+    <div class="form-group mb-3" style="margin-left: 30px;">
+        <input type="checkbox" class="form-check-input" formControlName="IsSubscribe">
+        <label class="form-check-label">Send Me daily offers</label>
+    </div>
+    <div class="form-group">  
+      <label class="form-lable">Password: </label>
+      <input type="password" class="form-control" formControlName="password"/>
+    </div>
+    <div class="form-group">  
+      <label class="form-lable">Confirm Password: </label>
+      <input type="password" class="form-control" formControlName="confirmPassword"
+      [class.is-invalid]="registrationForm.errors?.misMatch"/>
+      <small *ngIf="registrationForm.errors?.misMatch">Password do not match</small>
+    </div>
+    
+    <div formGroupName="address">
+      <div class="form-group">  
+        <label class="form-lable">City: </label>
+        <input type="text" class="form-control" formControlName="city"/>
+      </div>
+      <div class="form-group">  
+        <label class="form-lable">State: </label>
+        <input type="text" class="form-control" formControlName="state"/>
+      </div>
+      <div class="form-group">  
+        <label class="form-lable">County: </label>
+        <input type="text" class="form-control" formControlName="country"
+        />
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-12">
+      <button class="btn btn-block btn-primary" >Submit</button>
+    </div>
+    <div class="col-sm-6 col-md-12">
+      <button class="btn btn-block btn-primary" (click)="loadApiData()" >Load API Data</button>
+    </div>
+  </form>
+</div>

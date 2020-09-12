@@ -1,0 +1,85 @@
+<div class="container-fluid">
+  <form #userForm="ngForm" (ngSubmit)="onSubmit(userForm)">
+      <div>{{errorMessage}}</div>
+      {{userForm.value | json}}
+        <br/>
+      {{userModel | json}}
+    <div class="form-group"> 
+      <label>Name</label>
+      <input type="text" required #name="ngModel" required  class="form-control" [(ngModel)]="userModel.name" name="name"/>
+      <small class="text-danger" [class.d-none]="name.valid">Name is required*</small>
+    </div>
+   
+    <!-- {{name.className}}<br/>  for this only #name required ngModel not required -->
+    {{name.valid}} 
+    <div class="form-group">
+      <label>E-mail</label>
+      <input type="email" #email="ngModel" required class="form-control" [class.is-invalid]="email.invalid && email.touched"  [(ngModel)]="userModel.email" name="email"/>
+     
+    </div>
+    <div class="form-group"> 
+      <label>
+        Phone number
+      </label>
+      <input type="tel" #phone="ngModel" pattern="\d{10}$" [class.is-invalid]="phone.invalid && phone.touched"
+      class="form-control" [(ngModel)]="userModel.phone" name="phone" required/>
+      <div *ngIf="phone.errors && phone.invalid">
+          <small class="text-danger" *ngIf="phone.errors.required">Phone number is required</small>
+          <small class="text-danger" *ngIf="phone.errors.pattern">Phone number must be 10 digits</small>
+      </div>
+    </div>
+    <div class="form-group"> 
+      <label>
+        Select option
+      </label>
+     <!-- <select class="custom-select" name="topic" [(ngModel)]="userModel.topic" 
+     #topic="ngModel" [class.is-invalid]="topic.invalid && topic.touched" required>
+       <option value="">Select option</option>
+      <option *ngFor="let item of itemList" >{{item}}</option>
+     </select> -->
+
+     <select class="custom-select" name="topic" [(ngModel)]="userModel.topic" (blur)="checkValidation(topic.value)"
+     (change)="checkValidation(topic.value)"
+     #topic="ngModel" [class.is-invalid]="IsTopicHasValue && topic.touched" required>
+       <option value="">Select option</option>
+      <option *ngFor="let item of itemList" >{{item}}</option>
+     </select>
+     <small class="text-danger" [class.d-none]="!IsTopicHasValue || topic.untouched">Select option</small>
+     
+    </div>
+    <div class="mb-3">
+      <label>Preference</label>
+      <div class="form-check">
+          <input type="radio" class="form-check-input" name="timeP" value="morning" [(ngModel)]="userModel.timeP"/>
+          <label class="form-check-label">Morning</label>
+      </div>
+      <div class="form-check">
+        <input type="radio" class="form-check-input" name="timeP" value="Evening" [(ngModel)]="userModel.timeP">
+        <label class="form-check-lable">Evening</label>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <div class="form-check"> 
+      <input type="checkbox" class="form-check-input" name="Remeber" [(ngModel)]="userModel.Remeber"/>
+      <label class="form-check-label">Remeber me! </label>
+      </div>
+    </div>
+
+    <div class="container well" ngModelGroup="address">
+      <div class="form-group">
+        <input type="text" class="form-control" name="address1" >
+        <label class="form-control-label">Address 1 </label>
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" name="address2" >
+        <label class="form-control-label">Address 2 </label>
+      </div>
+    </div>
+    <div class="center">
+      <button [disabled]="userForm.form.invalid || IsTopicHasValue"  class="btn btn-primary">Submit</button>
+    </div>
+    
+  
+  </form>
+</div>
